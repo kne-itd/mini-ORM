@@ -72,17 +72,42 @@ namespace ORM.Model
 
         public void Save()
         {
-            string query = "INSERT INTO patient (patientName, dateOfBirth, animalType) " +
-                "VALUES " +
-                "(@patientName, @dateOfBirth, @animalType)";
-            SqlCommand cmd = new SqlCommand(query, myConn);
-            cmd.Parameters.AddWithValue("@patientName", patientName);
-            cmd.Parameters.AddWithValue("@dateOfBirth", dateOfBirth);
-            cmd.Parameters.AddWithValue("@animalType", animalType.AnimalTypeID);
+            string tableName = "patient";
 
-            myConn.Open();
-            cmd.ExecuteNonQuery();
+            ArrayList Values = new ArrayList()
+            {
+                patientName,
+                dateOfBirth,
+                animalType.AnimalTypeID
+            };
+
+            List<string> keys = new List<string>
+            {
+                "patientName",
+                "dateOfBirth",
+                "animaltype"
+            };
+            Zzz(tableName, Values, keys);
+        }
+
+        private void Zzz(string TableName, ArrayList values, List<string> keys)
+        {
+            string fieldnames = string.Join(",", keys);
+            string parameters = "@" + string.Join(",@", keys);
+
+            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") " +
+                "VALUES " +
+                "(" + parameters + ")";
+
+            SqlCommand cmd = new SqlCommand(query, myConn);
+            for (int i = 0; i < keys.Count; i++)
+            {
+                cmd.Parameters.AddWithValue("@" + keys[i], values[i]);
+            }
+
             Console.WriteLine(query);
+            myConn.Open();
+           cmd.ExecuteNonQuery();
             myConn.Close();
         }
     }
