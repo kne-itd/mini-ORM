@@ -74,6 +74,7 @@ namespace ORM.Model
         {
             string tableName = "patient";
 
+            // create lists
             ArrayList Values = new ArrayList()
             {
                 patientName,
