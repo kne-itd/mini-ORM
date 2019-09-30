@@ -91,7 +91,7 @@ namespace ORM.Model
             string fieldnames = string.Join(",", keys);
             string parameters = "@" + string.Join(",@", keys);
 
-            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") " +
+            string query = "INSERT INTO " + tableName + " (" + fieldnames + ") " +
                 "VALUES " +
                 "(" + parameters + ")";
 
