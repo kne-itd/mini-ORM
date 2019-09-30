@@ -72,16 +72,18 @@ namespace ORM.Model
 
         public void Save()
         {
-            string query = "INSERT INTO patient (patientName, dateOfBirth, animaltype) " +
+            string query = "INSERT INTO patient (patientName, dateOfBirth, animalType) " +
                 "VALUES " +
-                "('" + patientName + "','" + dateOfBirth.ToString("yyyy-MM-dd") + "'," + animalType.AnimalTypeID + ")";
+                "(@patientName, @dateOfBirth, @animalType)";
             SqlCommand cmd = new SqlCommand(query, myConn);
-            
+            cmd.Parameters.AddWithValue("@patientName", patientName);
+            cmd.Parameters.AddWithValue("@dateOfBirth", dateOfBirth);
+            cmd.Parameters.AddWithValue("@animalType", animalType.AnimalTypeID);
+
             myConn.Open();
             cmd.ExecuteNonQuery();
             Console.WriteLine(query);
             myConn.Close();
-            
         }
 
         
