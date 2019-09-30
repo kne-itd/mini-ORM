@@ -87,15 +87,16 @@ namespace ORM.Model
                 "dateOfBirth",
                 "animaltype"
             };
-            Zzz(tableName, Values, keys);
+            int newID = Zzz(tableName, Values, keys);
+            Console.WriteLine(newID);
         }
 
-        private void Zzz(string TableName, ArrayList values, List<string> keys)
+        private int Zzz(string TableName, ArrayList values, List<string> keys)
         {
             string fieldnames = string.Join(",", keys);
             string parameters = "@" + string.Join(",@", keys);
 
-            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") " +
+            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") output INSERTED.patientID " +
                 "VALUES " +
                 "(" + parameters + ")";
 
@@ -107,8 +108,10 @@ namespace ORM.Model
 
             Console.WriteLine(query);
             myConn.Open();
-           cmd.ExecuteNonQuery();
+            int modified = (int)cmd.ExecuteScalar();
+            
             myConn.Close();
+            return modified;
         }
     }
 }
