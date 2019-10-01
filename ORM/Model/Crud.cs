@@ -37,13 +37,38 @@ namespace ORM.Model
             return modified;
         }
 
-        protected void Delete()
+        protected void Delete(string TableName, string key, int value)
         {
+            string query = "DELETE FROM " + TableName + " WHERE " + key + " = @value";
+            SqlCommand cmd = new SqlCommand(query, myConn);
+            cmd.Parameters.AddWithValue("@value", value);
+            myConn.Open();
+            cmd.ExecuteNonQuery();
+            myConn.Close();
 
         }
 
-        protected void Update()
+        protected void Update(string TableName, ArrayList values, List<string> keys, string key, string value)
         {
+            string query = "UPDATE " + TableName + " SET ";
+            int l = values.Count;
+
+            for (int i = 0; i < l; i++)
+            {
+                query += keys[i] + " = @" + keys[i] + ",";
+            }
+            char[] charToBeRemoved = { ',' };
+            query = query.TrimEnd(charToBeRemoved);
+            query += " WHERE " + key + "=" + value;
+
+            SqlCommand cmd = new SqlCommand(query, myConn);
+            for (int i = 0; i < l; i++)
+            {
+                cmd.Parameters.AddWithValue("@" + keys[i], values[i]);
+            }
+            myConn.Open();
+            cmd.ExecuteNonQuery();
+            myConn.Close();
 
         }
     }

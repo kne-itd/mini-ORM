@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using ORM.Model;
 
@@ -18,8 +19,26 @@ namespace ORM
                 AnimalTypeName = "Hund",
                 AnimalTypeID = 1
             };
-
+            /*
             patient.Save();
+            
+            patient.PatientID = 35;
+            patient.Delete();
+            */
+
+            patient.PatientID = 37;
+            patient.PatientName = "Bowwow";
+            patient.DateOfBirth = new DateTime(2013, 5, 30);
+            patient.Deceased = new DateTime(2018, 12, 31);
+
+            List<string> propertiesToBeUpdate = new List<string>
+            {
+                "PatientName",
+                "DateOfBirth",
+                "Deceased"
+            };
+
+            patient.Update(propertiesToBeUpdate);
         }
 
         static SqlConnection GetConnection()

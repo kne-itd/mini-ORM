@@ -18,8 +18,14 @@ namespace ORM.Model
 
         public int PatientID
         {
-            get;
-            set;
+            get
+            {
+                return patientID;
+            }
+            set
+            {
+                patientID = value;
+            }
         }
         public string PatientName
         {
@@ -90,6 +96,25 @@ namespace ORM.Model
 
             int newID = Insert(tableName, Values, keys);
             Console.WriteLine(newID);
+        }
+
+        public void Delete()
+        {
+            string tableName = "patient";
+            base.Delete(tableName, "patientId", patientID);
+
+        }
+
+        public void Update(List<string> keys)
+        {
+            string tableName = "patient";
+            ArrayList Values = new ArrayList();
+            foreach(string item in keys)
+            {   
+                Values.Add( this.GetType().GetProperty(item).GetValue(this, null));
+            }
+
+            base.Update(tableName, Values, keys, "patientId", patientID.ToString());
         }
     }
 }
