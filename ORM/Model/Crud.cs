@@ -9,7 +9,7 @@ namespace ORM.Model
     {
         private SqlConnection myConn;
 
-        public Crud( SqlConnection c)
+        public Crud( SqlConnection connection)
         {
             myConn = connection;
         }
@@ -19,7 +19,7 @@ namespace ORM.Model
             string fieldnames = string.Join(",", keys);
             string parameters = "@" + string.Join(",@", keys);
 
-            string query = "INSERT INTO " + TableName + " (" + fieldnames + ")  " +
+            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") output INSERTED.patientID " +
                 "VALUES " +
                 "(" + parameters + ")";
 
