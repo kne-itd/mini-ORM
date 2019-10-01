@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ORM.Model
 {
-    public class Patient
+    public class Patient : Crud
     {
         private int patientID;
         private string patientName;
@@ -65,9 +65,9 @@ namespace ORM.Model
             get;
         }
 
-        public Patient(SqlConnection c)
+        public Patient(SqlConnection c) : base(c)
         {
-            myConn = c;
+        //    myConn = c;
         }
 
         public void Save()
@@ -87,16 +87,17 @@ namespace ORM.Model
                 "dateOfBirth",
                 "animaltype"
             };
-            int newID = Zzz(tableName, Values, keys);
+
+            int newID = Insert(tableName, Values, keys);
             Console.WriteLine(newID);
         }
 
-        private int Zzz(string TableName, ArrayList values, List<string> keys)
+ /*       private int Zzz(string TableName, ArrayList values, List<string> keys)
         {
             string fieldnames = string.Join(",", keys);
             string parameters = "@" + string.Join(",@", keys);
 
-            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") output INSERTED.patientID " +
+            string query = "INSERT INTO " + TableName + " (" + fieldnames + ")  " +
                 "VALUES " +
                 "(" + parameters + ")";
 
@@ -113,5 +114,6 @@ namespace ORM.Model
             myConn.Close();
             return modified;
         }
+        */
     }
 }
