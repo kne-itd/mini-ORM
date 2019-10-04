@@ -1,49 +1,88 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 namespace ORM.Model
 {
-    public class AnimalType
+    public class AnimalTypes : Crud
     {
         private int animalTypeID;
         private string animalType;
         public int AnimalTypeID
         {
-            get;
-            set;
+            get
+            {
+                return animalTypeID;
+            }
+            set
+            {
+                animalTypeID = value;
+            }
         }
-        public string AnimalTypeName
+        public string AnimalType
         {
-            get;
-            set;
+            get
+            {
+                return animalType;
+            }
+            set
+            {
+                animalType = value;
+            }
         }
+
+        public AnimalTypes(SqlConnection c) : base(c)
+        {
+        }
+
         public void Save()
         {
-            // needs connection
-            // build sql
-            // 
+            string tableName = "animaltype";
+
+            ArrayList Values = new ArrayList()
+            {
+                animalType,
+            };
+
+            List<string> keys = new List<string>
+            {
+                "animalType",
+            };
+
+            int newID = Insert(tableName, Values, keys, "animaltypeID");
+            Console.WriteLine(newID);
         }
         public void Delete()
         {
-            // needs connection
-            // build sql
-            // 
+            string tableName = "animaltype";
+            base.Delete(tableName, "animalTypeID", animalTypeID);
         }
-        public void Update()
+
+        public void Update(List<string> keys)
         {
-            // needs connection
-            // build sql
-            // 
+            string tableName = "animaltype";
+            ArrayList Values = new ArrayList();
+            foreach (string item in keys)
+            {
+                Values.Add(this.GetType().GetProperty(item).GetValue(this, null));
+            }
+
+            base.Update(tableName, Values, keys, "animalTypeID", animalTypeID.ToString());
         }
-        public void Read()
+
+        public void Get()
         {
-            // needs connection
-            // build sql
-            // 
-        }
-        public AnimalType()
-        {
-            // needs connection
-            // build sql
-            // 
+            string tableName = "animaltype";
+
+            SqlDataReader reader = Read(tableName, "animaltypeID", AnimalTypeID.ToString());
+
+            while (reader.Read())
+            {
+                AnimalTypeID = reader.GetInt32(0);
+                animalType = reader.GetString(1);
+            }
+
+            reader.Close();
         }
     }
 }

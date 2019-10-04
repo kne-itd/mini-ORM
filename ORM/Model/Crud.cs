@@ -14,13 +14,13 @@ namespace ORM.Model
             myConn = connection;
         }
 
-        protected int Insert(string TableName, ArrayList values, List<string> keys)
+        protected int Insert(string TableName, ArrayList values, List<string> keys, string Identity)
         {
             string fieldnames = string.Join(",", keys);
             string parameters = "@" + string.Join(",@", keys);
 
-            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") output INSERTED.patientID " +
-                "VALUES " +
+            string query = "INSERT INTO " + TableName + " (" + fieldnames + ") output INSERTED." + Identity +
+                " VALUES " +
                 "(" + parameters + ")";
 
             SqlCommand cmd = new SqlCommand(query, myConn);
@@ -67,9 +67,28 @@ namespace ORM.Model
                 cmd.Parameters.AddWithValue("@" + keys[i], values[i]);
             }
             myConn.Open();
-            cmd.ExecuteNonQuery();
+
+            int rowsAffected = cmd.ExecuteNonQuery();
+            Console.WriteLine(rowsAffected);
             myConn.Close();
 
+        }
+
+        protected SqlDataReader Read(string TableName, string key, string Value)
+        {
+            string query = "SELECT * FROM " + TableName +
+                " WHERE " + key + "= @key";
+            SqlCommand cmd = new SqlCommand(query, myConn);
+            cmd.Parameters.AddWithValue("@key", Value);
+
+            if (myConn.State == System.Data.ConnectionState.Closed)
+            {
+                myConn.Open();
+            }
+            
+            SqlDataReader reader = cmd.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+
+            return reader;
         }
     }
 }

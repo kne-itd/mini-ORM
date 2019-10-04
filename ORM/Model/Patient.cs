@@ -12,7 +12,7 @@ namespace ORM.Model
         private DateTime dateOfBirth;
         private DateTime deceased;
         private DateTime created;
-        private AnimalType animalType;
+        private AnimalTypes animalType;
 
         private SqlConnection myConn;
 
@@ -50,7 +50,7 @@ namespace ORM.Model
                 dateOfBirth = value;
             }
         }
-        public AnimalType AnimalsType
+        public AnimalTypes AnimalType
         {
             get
             {
@@ -73,7 +73,7 @@ namespace ORM.Model
 
         public Patient(SqlConnection c) : base(c)
         {
-        //    myConn = c;
+            myConn = c;
         }
 
         public void Save()
@@ -94,7 +94,7 @@ namespace ORM.Model
                 "animaltype"
             };
 
-            int newID = Insert(tableName, Values, keys);
+            int newID = Insert(tableName, Values, keys, "patientId");
             Console.WriteLine(newID);
         }
 
@@ -115,6 +115,25 @@ namespace ORM.Model
             }
 
             base.Update(tableName, Values, keys, "patientId", patientID.ToString());
+        }
+
+        public void Get()
+        {
+            string tableName = "patient";
+
+            SqlDataReader reader = Read(tableName, "patientId", patientID.ToString());
+
+            animalType = new AnimalTypes(myConn);
+            while (reader.Read())
+            {
+                patientID = reader.GetInt32(0);
+                patientName = reader.GetString(1);
+                dateOfBirth = reader.GetDateTime(2);
+                
+                animalType.AnimalTypeID = reader.GetInt32(4);
+            }
+            reader.Close();
+            animalType.Get();
         }
     }
 }

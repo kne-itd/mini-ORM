@@ -13,19 +13,42 @@ namespace ORM
             SqlConnection conn = GetConnection();
 
             Patient patient = new Patient(conn);
+
+            //           TestGet(patient);
+
+            //            TestInsert(patient, conn);
+
+            //            TestUpdate(patient);
+
+            //            TestDelete(patient);
+        }
+        static void TestGet( Patient patient)
+        {
+            
+
+            patient.PatientID = 36;
+            patient.Get();
+            Console.WriteLine(patient.PatientID);
+            Console.WriteLine(patient.PatientName);
+            Console.WriteLine(patient.DateOfBirth);
+            Console.WriteLine(patient.AnimalType.AnimalTypeID);
+            Console.WriteLine(patient.AnimalType.AnimalType);
+        }
+
+        static void TestInsert( Patient patient, SqlConnection conn)
+        {
             patient.PatientName = "Fnuller";
             patient.DateOfBirth = new DateTime(2015, 12, 24);
-            patient.AnimalsType = new AnimalType {
-                AnimalTypeName = "Hund",
+            patient.AnimalType = new AnimalTypes(conn)
+            {
+                AnimalType = "Hund",
                 AnimalTypeID = 1
             };
-            /*
             patient.Save();
-            
-            patient.PatientID = 35;
-            patient.Delete();
-            */
+        }
 
+        static void TestUpdate( Patient patient)
+        {
             patient.PatientID = 37;
             patient.PatientName = "Bowwow";
             patient.DateOfBirth = new DateTime(2013, 5, 30);
@@ -39,6 +62,12 @@ namespace ORM
             };
 
             patient.Update(propertiesToBeUpdate);
+        }
+
+        static void TestDelete (Patient patient)
+        {
+            patient.PatientID = 35;
+            patient.Delete();
         }
 
         static SqlConnection GetConnection()
