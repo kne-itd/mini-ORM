@@ -15,6 +15,7 @@ namespace ORM.Model
         private AnimalTypes animalType;
 
         private SqlConnection myConn;
+        private string tableName = "patient";
 
         public int PatientID
         {
@@ -78,7 +79,6 @@ namespace ORM.Model
 
         public void Save()
         {
-            string tableName = "patient";
 
             ArrayList Values = new ArrayList()
             {
@@ -100,14 +100,12 @@ namespace ORM.Model
 
         public void Delete()
         {
-            string tableName = "patient";
             base.Delete(tableName, "patientId", patientID);
 
         }
 
         public void Update(List<string> keys)
         {
-            string tableName = "patient";
             ArrayList Values = new ArrayList();
             foreach(string item in keys)
             {   
@@ -119,8 +117,6 @@ namespace ORM.Model
 
         public void Get()
         {
-            string tableName = "patient";
-
             SqlDataReader reader = Read(tableName, "patientId", patientID.ToString());
 
             animalType = new AnimalTypes(myConn);

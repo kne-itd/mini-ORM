@@ -8,6 +8,8 @@ namespace ORM.Model
     {
         private int animalTypeID;
         private string animalType;
+
+        private string tableName = "animaltype";
         public int AnimalTypeID
         {
             get
@@ -37,8 +39,6 @@ namespace ORM.Model
 
         public void Save()
         {
-            string tableName = "animaltype";
-
             ArrayList Values = new ArrayList()
             {
                 animalType,
@@ -54,13 +54,11 @@ namespace ORM.Model
         }
         public void Delete()
         {
-            string tableName = "animaltype";
             base.Delete(tableName, "animalTypeID", animalTypeID);
         }
 
         public void Update(List<string> keys)
         {
-            string tableName = "animaltype";
             ArrayList Values = new ArrayList();
             foreach (string item in keys)
             {
@@ -72,8 +70,6 @@ namespace ORM.Model
 
         public void Get()
         {
-            string tableName = "animaltype";
-
             SqlDataReader reader = Read(tableName, "animaltypeID", AnimalTypeID.ToString());
 
             while (reader.Read())
