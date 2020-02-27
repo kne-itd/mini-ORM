@@ -14,8 +14,6 @@ namespace ORM.Model
         private DateTime created;
         private AnimalType animalType;
 
-        private SqlConnection myConn;
-
         public int PatientID
         {
             get;
@@ -67,7 +65,6 @@ namespace ORM.Model
 
         public Patient(SqlConnection c) : base(c)
         {
-        //    myConn = c;
         }
 
         public void Save()
